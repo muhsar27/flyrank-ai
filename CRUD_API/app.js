@@ -1,29 +1,15 @@
-//import http from "http"
-const http = require('http')
+const express = require('express');
 const fs = require('fs')
-const port = 8080;
+const app = express()
 
-const server = http.createServer(function (req, res) {
+const PORT = 5000;
 
-
-    res.writeHead(200, { 'Content-Type': 'text/html' })
-    fs.readFile('index.html', function (error, data) {
-        if (error) {
-            res.writeHead(404)
-            res.write('Error: File Not Found')
-        } else {
-            res.write(data)
-        }
-        res.end()
-    })
-
+app.get('/', (req, res) => {
+    const page = fs.readFile("index.html")
+    fs.
+        res.send("Hello world, I'm using express for the first time")
 })
 
-
-server.listen(port, function (error) {
-    if (error) {
-        console.log('Something went wrong', error)
-    } else {
-        console.log('Makima is listening on port ' + port)
-    }
+app.listen(PORT, () => {
+    console.log(`Makima is listening on ${PORT}`)
 })
