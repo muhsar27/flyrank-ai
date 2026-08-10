@@ -1,29 +1,29 @@
-//import http from "http"
-const http = require('http')
-const fs = require('fs')
-const port = 8080;
+const express = require('express');
+const path = require('path')
+const app = express()
+const taskList = 
+[{id:1,title:"First Task",done:true}]
+const port = 3000;
 
-const server = http.createServer(function (req, res) {
+const swagger = require('swagger-ui-express')
 
-
-    res.writeHead(200, { 'Content-Type': 'text/html' })
-    fs.readFile('index.html', function (error, data) {
-        if (error) {
-            res.writeHead(404)
-            res.write('Error: File Not Found')
-        } else {
-            res.write(data)
-        }
-        res.end()
-    })
-
+app.get('/', (req, res) => {
+  res.json({ 
+        name: 'Task API', 
+        version: '1.0', 
+        endpoints: ['/tasks']
+    });
 })
 
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+})
 
-server.listen(port, function (error) {
-    if (error) {
-        console.log('Something went wrong', error)
-    } else {
-        console.log('Makima is listening on port ' + port)
-    }
+app.get('/tasks', (req, res) => {
+    
+    res.json(taskList)
+})
+
+app.listen(port, () => {
+    console.log(`Makima is listening on ${port}`)
 })
