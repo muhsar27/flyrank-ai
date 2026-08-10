@@ -1,15 +1,17 @@
 const express = require('express');
-const fs = require('fs')
+const path = require('path')
 const app = express()
 
-const PORT = 5000;
+const port = 3000;
+
+const swagger = require('swagger-ui-express')
 
 app.get('/', (req, res) => {
-    const page = fs.readFile("index.html")
-    fs.
-        res.send("Hello world, I'm using express for the first time")
+    //const page = fs.readFile("index.html")
+
+    res.sendFile((path.join(__dirname, 'index.html')))
 })
 
-app.listen(PORT, () => {
-    console.log(`Makima is listening on ${PORT}`)
+app.listen(port, () => {
+    console.log(`Makima is listening on ${port}`)
 })
