@@ -7,9 +7,15 @@ const port = 3000;
 const swagger = require('swagger-ui-express')
 
 app.get('/', (req, res) => {
-    //const page = fs.readFile("index.html")
+  res.json({ 
+        name: 'Task API', 
+        version: '1.0', 
+        endpoints: ['/tasks']
+    });
+})
 
-    res.sendFile((path.join(__dirname, 'index.html')))
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
 })
 
 app.listen(port, () => {
