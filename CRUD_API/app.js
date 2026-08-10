@@ -1,29 +1,37 @@
-const express = require('express');
-const path = require('path')
-const app = express()
-const taskList = 
-[{id:1,title:"First Task",done:true}]
+const express = require("express");
+const path = require("path");
+const app = express();
+const taskList = [{ id: 1, title: "First Task", done: true }];
 const port = 3000;
 
-const swagger = require('swagger-ui-express')
+const swagger = require("swagger-ui-express");
 
-app.get('/', (req, res) => {
-  res.json({ 
-        name: 'Task API', 
-        version: '1.0', 
-        endpoints: ['/tasks']
-    });
-})
+app.get("/", (req, res) => {
+  res.json({
+    name: "Task API",
+    version: "1.0",
+    endpoints: ["/tasks"],
+  });
+});
 
-app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok' });
-})
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 
-app.get('/tasks', (req, res) => {
-    
-    res.json(taskList)
-})
+app.get("/tasks", (req, res) => {
+  res.json(taskList);
+});
+
+app.get("/tasks/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+
+  const task = taskList.find((task) => task.id === id);
+  if (!task) {
+    return res.status(404).send(`Task ${id} Not Found`);
+  }
+  res.send(task);
+});
 
 app.listen(port, () => {
-    console.log(`Makima is listening on ${port}`)
-})
+  console.log(`Makima is listening on ${port}`);
+});
