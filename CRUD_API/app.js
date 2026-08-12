@@ -37,23 +37,27 @@ app.get("/tasks/:id", (req, res) => {
 });
 
 app.post("/tasks", (req, res) => {
-    const title = req.body.title; 
+  const title = req.body.title;
 
-    if (!title || title.trim() === ""){
-        return res.status(404).send("Request timed out");
-    }
-    
-    const ids = taskList.map(ids => taskList.id)
+  if (!title || title.trim() === "") {
+    return res.status(404).send("Request timed out");
+  }
 
-    
-    const newTask = []
+  const ids = taskList.map((task) => task.id);
+  const newId = 0 
+  if (taskList.length < 1){
+    newId = 1 
+  }
+  newId = Math.max(...ids) + 1;
 
+  const newTask = {
+    id: newId,
+    title: title,
+    done: false,
+  };
 
-    
-    
-    
+  taskList.push(newTask);
 
-    
   res.send("POST REQUEST SENT");
 });
 app.listen(port, () => {
