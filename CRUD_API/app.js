@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+app.use(express.json());
+
 const taskList = [
   { id: 1, title: "First Task", done: true },
   { id: 2, title: "Second Task", done: false },
@@ -44,12 +46,13 @@ app.post("/tasks", (req, res) => {
   }
 
   const ids = taskList.map((task) => task.id);
-  const newId = 0 
-  if (taskList.length < 1){
-    newId = 1 
-  }
-  newId = Math.max(...ids) + 1;
 
+  let newId;
+  if (taskList.length === 0) {
+    newId = 1;
+  } else {
+    newId = Math.max(...ids) + 1;
+  }
   const newTask = {
     id: newId,
     title: title,
