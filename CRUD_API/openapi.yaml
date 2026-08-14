@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: Mk1 CRUD API
+  version: 1.0.0
+  description: API documentation for my CRUD Task application
+servers:
+  - url: http://localhost:3000
+paths:
+  /tasks:
+    get:
+      summary: List available tasks
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Hello, World!
+    post:
