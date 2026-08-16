@@ -16,13 +16,11 @@ let taskList = [
 ];
 const port = 3000;
 
-const swagger = require("swagger-ui-express");
-
 app.get("/", (req, res) => {
   res.json({
     name: "Task API",
     version: "1.0",
-    endpoints: ["/tasks"],
+    endpoints: ["/tasks", "/health", "/api-docs"],
   });
 });
 
@@ -67,42 +65,28 @@ app.post("/tasks", (req, res) => {
 
   taskList.push(newTask);
 
-  res.send("POST REQUEST SENT");
+  res.status(201).json(newTask);
 });
 
 app.put("/tasks/:id", (req, res) => {
-  const {
-    body,
-    params: { id },
-  } = req;
+  const parsedId = parseInt(req.params.id);
 
-  const parsedId = parseInt(id);
-  if (isNaN(parsedId)) {
-    return res.status(404).send("Not Found");
-  }
   const taskIndex = taskList.findIndex((task) => task.id === parsedId);
   if (taskIndex === -1) {
-    return res.status(404).send("Task Index Not Found");
+    return res.status(400).send("Task Index Not Found");
   }
 
-  taskList[taskIndex] = { id: parsedId, ...body };
+  taskList[taskIndex] = { id: parsedId, ...req.body };
 
   res.status(200).send(`${taskList[taskIndex].id} added successfully`);
 });
 
 app.delete("/tasks/:id", (req, res) => {
-  const {
-    params: { id },
-  } = req;
-  const taskId = parseInt(id);
-
-  if (isNaN(taskId)) {
-    return res.status(404).send(`${taskId} not found`);
-  }
+  const taskId = parseInt(req.params.id, 10);
 
   const taskIndex = taskList.findIndex((task) => task.id === taskId);
   if (taskIndex === -1) {
-    return res.status(404).send("Task Index not found");
+    return res.status(400).send("Task Index not found");
   }
 
   taskList.splice(taskIndex, 1);

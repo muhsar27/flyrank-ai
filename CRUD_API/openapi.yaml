@@ -1,23 +1,69 @@
 openapi: 3.0.0
+
 info:
   title: Mk1 CRUD API
   version: 1.0.0
   description: API documentation for my CRUD Task application
+
 servers:
   - url: http://localhost:3000
+
 paths:
-  /tasks:
+  /health:
     get:
-      summary: List available tasks
+      summary: Get API health
       responses:
         "200":
-          description: Successful response
+          description: API is healthy
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
+                  status:
                     type: string
-                    example: Hello, World!
+                    example: ok
+
+  /tasks:
+    get:
+      summary: Get all tasks
+      responses:
+        "200":
+          description: Returns a list of all tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "components/schemas/Task"
+
     post:
+      summary: Create New tasks
+      responses:
+        "200":
+          description: Adds a new task to the task list
+          content:
+            application/json:
+              schema:
+                $ref: "components/schemas/Task"
+
+  /tasks/{id}:
+
+components:
+  schemas:
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - done
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Saka is the best athlete of all time
+        done:
+          type: boolean
+          example: false
